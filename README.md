@@ -14,4 +14,4 @@ This repository contains implementations of two key concepts in Operating System
 
 ## Report
   - `Report.tex`: Source file for the report in LaTeX.  
-  - `Report.pdf`: Downloadable [`this`](https://github.com/trandinhhao/PTIT-HDH-SleepingBarberProblem-and-FIFO/blob/main/SourceCode/HDH_PTIT.pdf) version for convenience. 
+  - `Report.pdf`: Downloadable [`this`](https://github.com/trandinhhao/PTIT-HDH-SleepingBarberProblem-and-FIFO/blob/main/SourceCode/HDH_PTIT_Chude19.pdf) version for convenience. 
