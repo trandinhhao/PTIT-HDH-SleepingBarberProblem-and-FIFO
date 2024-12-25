@@ -1,0 +1,196 @@
+\chapter{Bài toán Người thợ cắt tóc}
+\label{Chapter2}
+
+\section{Giới thiệu bài toán}
+\subsection{Giới thiệu chung}
+Bài toán Người thợ cắt tóc là một bài toán kinh điển trong lĩnh vực đồng bộ hóa tiến trình. Dijkstra đã đề xuất bài toán này vào năm 1965 để chỉ ra sự phức tạp khi có nhiều hơn một tiến trình hệ điều hành.
+
+\subsection{Mô tả bài toán}
+Bài toán Người thợ cắt tóc được trình bày như sau:
+    \begin{itemize}
+        \item \textbf{Bối cảnh:}\\
+        - Một tiệm cắt tóc nhỏ có một thợ cắt tóc và một số lượng ghế chờ cố định trong phòng chờ cho khách hàng.
+        
+        \item \textbf{Cấu trúc của tiệm cắt tóc:}\\
+        - \textbf{Ghế cắt tóc:} Chỉ có một ghế cắt tóc duy nhất. Thợ cắt tóc chỉ có thể cắt tóc cho một khách hàng tại một thời điểm.\\
+        - \textbf{Ghế chờ:} Có $n$ ghế chờ trong phòng chờ dành cho khách hàng. Số lượng ghế chờ là cố định và hạn chế.
+        
+        \item \textbf{Hành vi của thợ cắt tóc:}\\
+        - Nếu không có khách hàng, thợ cắt tóc sẽ ngồi trên ghế cắt tóc và ngủ.\\
+        - Khi có khách hàng đến và đánh thức, thợ cắt tóc sẽ cắt tóc cho khách hàng đó.\\
+        - Sau khi cắt tóc xong cho một khách hàng, thợ cắt tóc kiểm tra phòng chờ. Nếu có khách hàng đang chờ, thợ cắt tóc sẽ mời khách tiếp theo vào và cắt tóc. Nếu không có khách hàng nào đang chờ, thợ cắt tóc sẽ tiếp tục ngủ.
+    
+        \item \textbf{Hành vi của khách hàng:} Khi một khách hàng đến tiệm\\
+        - Nếu thợ cắt tóc đang ngủ và không có khách hàng khác đang được phục vụ, khách hàng sẽ đánh thức thợ cắt tóc và được cắt tóc ngay.\\
+        - Nếu thợ cắt tóc đang bận và còn chỗ trống trong phòng chờ, khách hàng sẽ ngồi đợi đến lượt mình.\\
+        - Nếu phòng chờ đã đầy (không còn ghế trống), khách hàng sẽ rời đi mà không cắt tóc.
+    \end{itemize}
+
+Bài toán này thường được giải bằng cách sử dụng các công cụ đồng bộ hóa như \textbf{semaphore}, \textbf{mutex}, hoặc các điều kiện chờ (\textit{condition variables}).  
+
+\subsection{Vấn đề đồng bộ hóa}
+    \begin{itemize}    
+        \item \textbf{Tài nguyên chung:}\\
+        - \textbf{Ghế cắt tóc:} Chỉ một khách hàng có thể ngồi trên ghế cắt tóc và được phục vụ tại một thời điểm.\\
+        - \textbf{Ghế chờ:} Số lượng ghế chờ hạn chế, cần quản lý để tránh vượt quá số lượng ghế có sẵn.
+        
+        \item \textbf{Yêu cầu đồng bộ hóa:}\\
+        - Đảm bảo rằng chỉ một khách hàng có thể tương tác với thợ cắt tóc tại một thời điểm.\\
+        - Quản lý số lượng khách hàng trong phòng chờ để không vượt quá số ghế chờ.\\
+        - Tránh điều kiện deadlock (kẹt cứng), nơi mà thợ cắt tóc và khách hàng đều chờ đợi lẫn nhau và không ai tiến hành hành động.\\
+        - Tránh điều kiện starvation (đói), đảm bảo mọi khách hàng vào được phòng chờ sẽ cuối cùng được phục vụ.
+    \end{itemize}
+
+\subsection{Mô tả vấn đề}
+\begin{itemize}
+    \item \textbf{Quản lý đồng bộ trong môi trường đa luồng:}\\
+        - Cần sử dụng các cơ chế đồng bộ hóa như mutex, semaphore, hoặc monitor để quản lý truy cập đến các tài nguyên chung.\\
+        - Đảm bảo rằng các thao tác trên biến chung (ví dụ: số lượng khách hàng đang chờ) phải là nguyên tử để tránh điều kiện tranh chấp (race condition).
+    \item \textbf{Xử lý tình huống bất đồng bộ:}\\
+        - Khách hàng đến tiệm vào các thời điểm ngẫu nhiên.\\
+        - Thời gian cắt tóc cho mỗi khách hàng có thể khác nhau.
+\end{itemize}
+
+\subsection{Mục tiêu}
+\begin{itemize}
+    \item \textbf{Đối với thợ cắt tóc:}\\
+        - Thợ cắt tóc sẽ hoạt động hiệu quả, cắt tóc cho khách hàng nếu có, hoặc ngủ nếu không có khách.
+    \item \textbf{Đối với khách hàng:}\\
+        - Khách hàng nếu vào được phòng chờ sẽ cuối cùng được phục vụ.\\
+        - Thời gian cắt tóc cho mỗi khách hàng có thể khác nhau.
+\end{itemize}
+
+    \textbf{Kết luận:} Mục tiêu chính là \textbf{đảm bảo tính nhất quán và tránh lỗi:}\\
+        \hspace*{2em}
+        - Tránh các tình huống mà nhiều khách hàng được phục vụ cùng lúc.\\
+        \hspace*{2em}
+        - Tránh việc khách hàng chiếm ghế chờ khi không còn chỗ trống.\\
+        \hspace*{2em}
+        - Đảm bảo rằng không có khách hàng nào bị bỏ quên trong phòng chờ.
+
+\subsection{Các yếu tố cần xem xét trong giải pháp}
+\begin{itemize}
+    \item \textbf{Sử dụng semaphore và mutex:}\\
+        - \textbf{Semaphore đếm (Counting Semaphore):} Để quản lý số lượng ghế chờ và khách hàng đang chờ.\\
+        - \textbf{Mutex (Mutual Exclusion):} Để đảm bảo truy cập độc quyền đến các biến chia sẻ, như biến đếm số khách hàng.
+    \item \textbf{Quy trình của thợ cắt tóc:}\\
+        - Chờ đợi khách hàng (có thể ngủ).\\
+        - Khi có khách hàng, thực hiện cắt tóc.\\
+        - Sau khi cắt tóc xong, kiểm tra xem có khách hàng đang chờ không.
+    \item \textbf{Quy trình của khách hàng:}\\
+        - Khi đến tiệm, kiểm tra xem có chỗ trong phòng chờ không: Nếu có, ngồi chờ và thông báo cho thợ cắt tóc; còn nếu không thì rời đi.\\
+        - Khi được thợ cắt tóc gọi, tiến vào ghế cắt tóc và được phục vụ.
+\end{itemize}
+
+\section{Giải quyết vấn đề}
+
+\subsection{Cài đặt thuật toán}
+\begin{enumerate}
+    \item \textbf{Khởi tạo các thành phần đồng bộ hóa:}\\
+    - \textbf{mutex = new Semaphore(1):} Đảm bảo truy cập tuần tự vào biến dùng chung \textbf{waitingCustomers}.\\
+    - \textbf{customers = new Semaphore(0):} Đại diện số lượng khách đang đợi. Nếu \textbf{customers = 0}, thợ cắt tóc sẽ ngủ.\\
+    - \textbf{haircut = new Semaphore(0):} Quản lý việc đồng bộ giữa thợ cắt tóc và khách hàng.
+    
+    \item \textbf{Biến hỗ trợ:}\\
+    - \textbf{waitingCustomers = 0:} Lưu trữ số lượng khách đang đợi trong tiệm.\\
+    - \textbf{N = 10:} Số ghế chờ tối đa.\\
+    - \textbf{TOTAL\_CUSTOMERS = 20:} Tổng số lượng khách đến tiệm.\\
+    - \textbf{random:} Tạo thời gian ngẫu nhiên cho hành động của khách và thợ.
+
+    \item \textbf{Hành vi khách hàng (\texttt{Customer}):}\\
+    - Khách hàng vào tiệm sau một khoảng thời gian ngẫu nhiên.\\
+    - Kiểm tra số lượng ghế chờ:
+    \begin{itemize}
+        \item Nếu \textbf{waitingCustomers $\geq$ N}, khách rời đi.
+        \item Nếu còn ghế trống:
+        \begin{itemize}
+            \item Tăng \textbf{waitingCustomers}.
+            \item Báo hiệu (\texttt{customers.release()}) để đánh thức thợ.
+            \item Chờ tín hiệu hoàn thành cắt tóc từ thợ (\texttt{haircut.acquire()}).
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Hành vi thợ cắt tóc (\texttt{Barber}):}\\
+    - Thợ chờ tín hiệu từ khách (\texttt{customers.acquire()}).\\
+    - Khi có khách:
+    \begin{itemize}
+        \item Giảm \textbf{waitingCustomers}.
+        \item Thực hiện cắt tóc trong thời gian ngẫu nhiên.
+        \item Sau khi cắt xong, gửi tín hiệu (\texttt{haircut.release()}) cho khách hàng.
+    \end{itemize}
+
+    \item \textbf{Luồng thực thi (\texttt{main}):}\\
+    - Tạo một luồng cho thợ cắt tóc.\\
+    - Tạo nhiều luồng khách hàng (tương ứng với \textbf{TOTAL\_CUSTOMERS}).\\
+    - Đợi tất cả các khách hàng được phục vụ trước khi đóng tiệm.
+\end{enumerate}
+
+\subsection{Chương trình Java}
+\lstinputlisting[language=Python]{SourceCode/BarberShop.java}
+
+\subsection{Kết quả chương trình}
+Ví dụ về 1 kết quả đầu ra:
+\begin{lstlisting}
+Tho cat toc dang cho khach tiep theo
+Khach id 19 vao cua hang, ngoi cho (Co tong cong 1 khach dang cho)
+Tho bat dau phuc vu khach id 19 (0 khach con lai dang cho)
+Khach id 14 vao cua hang, ngoi cho (Co tong cong 1 khach dang cho)
+Khach id 12 vao cua hang, ngoi cho (Co tong cong 2 khach dang cho)
+Khach id 3 vao cua hang, ngoi cho (Co tong cong 3 khach dang cho)
+Khach id 1 vao cua hang, ngoi cho (Co tong cong 4 khach dang cho)
+Khach id 17 vao cua hang, ngoi cho (Co tong cong 5 khach dang cho)
+Khach id 18 vao cua hang, ngoi cho (Co tong cong 6 khach dang cho)
+Khach id 7 vao cua hang, ngoi cho (Co tong cong 7 khach dang cho)
+Tho hoan thanh cat toc cho khach id 19!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 14 (6 khach con lai dang cho)
+Khach id 5 vao cua hang, ngoi cho (Co tong cong 7 khach dang cho)
+Khach id 4 vao cua hang, ngoi cho (Co tong cong 8 khach dang cho)
+Khach id 6 vao cua hang, ngoi cho (Co tong cong 9 khach dang cho)
+Khach id 9 vao cua hang, ngoi cho (Co tong cong 10 khach dang cho)
+Khach id 11 vao cua hang, thay kin cho va roi di
+Khach id 2 vao cua hang, thay kin cho va roi di
+Khach id 0 vao cua hang, thay kin cho va roi di
+Khach id 16 vao cua hang, thay kin cho va roi di
+Khach id 15 vao cua hang, thay kin cho va roi di
+Khach id 13 vao cua hang, thay kin cho va roi di
+Khach id 8 vao cua hang, thay kin cho va roi di
+Khach id 10 vao cua hang, thay kin cho va roi di
+Tho hoan thanh cat toc cho khach id 14!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 12 (9 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 12!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 3 (8 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 3!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 1 (7 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 1!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 17 (6 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 17!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 18 (5 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 18!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 7 (4 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 7!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 5 (3 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 5!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 4 (2 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 4!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 6 (1 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 6!
+Tho cat toc dang cho khach tiep theo
+Tho bat dau phuc vu khach id 9 (0 khach con lai dang cho)
+Tho hoan thanh cat toc cho khach id 9!
+Tho cat toc dang cho khach tiep theo
+
+Het khach, cua hang dong cua!
+\end{lstlisting}
+
+\subsection{Kết luận chương trình}
+Như vậy các tiến trình đã được điều độ đúng.

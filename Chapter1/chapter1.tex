@@ -1,0 +1,53 @@
+\chapter{Giới thiệu: Đề tài 19}
+\label{Chapter1}
+
+\section{Bối cảnh và động cơ nghiên cứu}
+Trong thời đại hiện nay, các vấn đề về tối ưu hóa tài nguyên và hiệu quả xử lý trong hệ điều hành ngày càng trở nên quan trọng. Việc mô phỏng và phân tích các giải pháp cho bài toán kinh điển không chỉ giúp hiểu rõ nguyên lý hoạt động của hệ điều hành mà còn tạo cơ sở cho việc phát triển các ứng dụng thực tế.  
+
+Hai bài toán "Người thợ cắt tóc" và "Thuật toán đổi trang theo nguyên tắc FIFO" đều là những vấn đề quan trọng trong lĩnh vực đồng bộ hóa và quản lý bộ nhớ trong hệ điều hành. Trong đó:
+
+\begin{itemize}
+    \item \textbf{Bài toán Người thợ cắt tóc:} Minh họa bài toán đồng bộ hóa kinh điển giữa các tiến trình trong môi trường đa luồng hoặc đa tiến trình.
+    \item \textbf{Thuật toán đổi trang FIFO:} Là một thuật toán cơ bản trong quản lý bộ nhớ, sử dụng nguyên tắc FIFO - "First In, First Out" (Vào trước, ra trước) để thay thế trang.
+\end{itemize}
+
+Thông qua việc nghiên cứu và xây dựng các chương trình mô phỏng, đề tài này không chỉ làm rõ các khái niệm lý thuyết mà còn cung cấp công cụ thực hành hữu ích.
+
+\section{Mục tiêu đề tài}
+Đề tài được thực hiện để giải quyết các vấn đề sau:  
+\begin{enumerate}
+    \item \textbf{Xây dựng chương trình minh họa giải pháp cho bài toán Người thợ cắt tóc:}  
+    Đảm bảo đồng bộ hóa giữa các tiến trình "Thợ cắt tóc" và "Khách hàng". Hiểu rõ cách sử dụng các công cụ đồng bộ hóa như semaphore, mutex hoặc điều kiện.  
+    \item \textbf{Mô tả và cài đặt thuật toán đổi trang theo nguyên tắc FIFO:}  
+    Viết chương trình mô tả thuật toán đổi trang theo nguyên tắc FIFO cho tiến trình được cấp 4 khung, không gian nhớ logic của tiến trình gồm 6 trang và các trang của tiến trình.Được truy cập 10 lần theo thứ tự nhập từ bàn phím.
+    \item Cung cấp các minh họa trực quan giúp người đọc dễ dàng nắm bắt quy trình hoạt động cũng như cách thức triển khai bài toán.
+\end{enumerate}
+
+\section{Phạm vi nghiên cứu}
+\begin{itemize}
+    \item \textbf{Bài toán Người thợ cắt tóc:}  
+    Giải quyết bài toán trong môi trường giả lập (mô phỏng đồng bộ hóa với các tiến trình hoặc luồng), sử dụng ngôn ngữ lập trình hỗ trợ cơ chế đồng bộ Java.  
+    \item \textbf{Thuật toán đổi trang FIFO:}  
+    Tập trung vào việc mô phỏng thuật toán trong không gian nhớ logic của một tiến trình. Không mở rộng sang các thuật toán thay thế trang khác như LRU hay OPT.
+\end{itemize}
+
+\section{Phương pháp thực hiện}
+Để đạt được mục tiêu đề tài, các bước thực hiện bao gồm:  
+\begin{enumerate}
+    \item \textbf{Nghiên cứu lý thuyết:}  
+    Tìm hiểu về bài toán Người thợ cắt tóc và các công cụ đồng bộ hóa (semaphore, mutex). Nghiên cứu nguyên lý hoạt động của thuật toán đổi trang FIFO.  
+    \item \textbf{Thiết kế và lập trình:}  
+    Viết chương trình minh họa bài toán Người thợ cắt tóc sử dụng các công cụ đồng bộ. Xây dựng chương trình mô phỏng thuật toán đổi trang FIFO, cho phép người dùng nhập dãy truy cập trang từ bàn phím.  
+    \item \textbf{Kiểm thử và đánh giá:}  
+    Chạy thử chương trình với các kịch bản khác nhau để đảm bảo tính chính xác và hiệu quả. Đánh giá kết quả và rút ra bài học thực tiễn.
+\end{enumerate}
+
+\section{Kết cấu báo cáo}
+Báo cáo được trình bày theo cấu trúc sau:  
+\begin{itemize}
+    \item \textbf{Giới thiệu:} Tổng quan về đề tài, mục tiêu và phương pháp thực hiện.  
+    \item \textbf{Cơ sở lý thuyết:} Trình bày lý thuyết về bài toán Người thợ cắt tóc và thuật toán đổi trang FIFO.  
+    \item \textbf{Thiết kế và cài đặt:} Chi tiết việc xây dựng chương trình mô phỏng.  
+    \item \textbf{Kết quả và đánh giá:} Mô tả kết quả thu được từ chương trình và các nhận xét đánh giá.  
+    \item \textbf{Kết luận:} Tóm tắt các kết quả đạt được và đề xuất hướng phát triển trong tương lai.
+\end{itemize}

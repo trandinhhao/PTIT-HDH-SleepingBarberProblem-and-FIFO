@@ -1,0 +1,86 @@
+\chapter{Thuật toán đổi trang theo nguyên tắc FIFO}
+\label{Chapter3}
+
+\section{Cơ sở lý thuyết}
+\subsection{Khái niệm quản lý bộ nhớ ảo}
+Bộ nhớ ảo là một cơ chế quan trọng trong hệ điều hành, cho phép ánh xạ không gian địa chỉ logic của tiến trình vào không gian địa chỉ vật lý của hệ thống. Khi bộ nhớ vật lý không đủ để chứa toàn bộ dữ liệu của một tiến trình, hệ điều hành sẽ lưu trữ các phần không cần thiết (trang) trong bộ nhớ phụ (như ổ đĩa) và chỉ tải chúng vào bộ nhớ chính khi cần thiết.
+
+\subsection{Thuật toán thay thế trang}
+Trong bộ nhớ ảo, khi một tiến trình cần truy cập một trang không nằm trong bộ nhớ chính, xảy ra lỗi trang (\textit{page fault}). Hệ điều hành phải chọn một trang hiện có để thay thế. Thuật toán thay thế trang FIFO (\textit{First In, First Out}) hoạt động theo nguyên tắc:
+\begin{itemize}
+    \item Trang nào được nạp vào bộ nhớ đầu tiên sẽ bị thay thế đầu tiên khi xảy ra lỗi trang.
+    \item Một hàng đợi (\textit{queue}) được sử dụng để quản lý thứ tự các trang trong bộ nhớ.
+\end{itemize}
+
+\subsection{Nguyên lý hoạt động của FIFO}
+Ví dụ, giả sử tiến trình có không gian nhớ logic gồm 6 trang và bộ nhớ vật lý có 4 khung. Khi dãy truy cập các trang là:  
+\[
+\{1, 2, 3, 4, 5, 1, 2, 3, 4, 5\}
+\]
+Thuật toán hoạt động như sau:
+\begin{enumerate}
+    \item \textbf{Lượt truy cập đầu tiên (1, 2, 3, 4):}  
+    Nạp lần lượt các trang 1, 2, 3, 4 vào bộ nhớ, không có trang nào bị thay thế.
+    \item \textbf{Lượt truy cập thứ năm (5):}  
+    Bộ nhớ đã đầy, trang 1 (vào trước) bị thay thế bởi trang 5.
+    \item \textbf{Lượt truy cập tiếp theo (1):}  
+    Trang 2 bị thay thế bởi trang 1, và quá trình tiếp tục.
+\end{enumerate}
+
+\subsection{Hạn chế của FIFO}
+Thuật toán FIFO tuy đơn giản nhưng có một số nhược điểm:
+\begin{itemize}
+    \item Không đảm bảo hiệu quả trong việc tối ưu hóa số lượng lỗi trang.
+    \item Có thể xảy ra hiện tượng \textbf{Belady's Anomaly}, khi tăng số khung bộ nhớ dẫn đến số lỗi trang cũng tăng.
+\end{itemize}
+
+\subsection{Ứng dụng thực tiễn}
+Thuật toán FIFO thường được sử dụng trong:
+\begin{itemize}
+    \item Các hệ thống đơn giản hoặc có tài nguyên hạn chế.
+    \item Mô phỏng và giảng dạy về quản lý bộ nhớ.
+\end{itemize}
+
+\section{Giải quyết bài toán}
+
+\textbf{Đề bài: }Viết chương trình mô tả thuật toán đổi trang theo nguyên tắc FIFO cho tiến trình được cấp 4 khung, không gian nhớ logic của tiến trình gồm 6 trang và các trang của tiến trình được truy cập 10 lần theo thứ tự nhập từ bàn phím.
+
+\subsection{Tổng quan bài toán}
+Cần viết một chương trình mô phỏng thuật toán thay thế trang (page replacement) theo nguyên tắc FIFO (First-In-First-Out), trong bối cảnh một hệ thống quản lý bộ nhớ ảo với các thông tin như sau:
+\begin{itemize}
+    \item \textbf{Tiến trình được cấp 4 khung:} Bộ nhớ vật lý (RAM) chỉ có thể chứa tối đa 4 trang (\textit{pages}) cùng một lúc.
+    \item \textbf{Không gian nhớ logic của tiến trình gồm 6 trang:} Tiến trình có tổng cộng 6 trang logic (được đánh số từ 1 đến 6) mà nó cần truy cập.
+    \item \textbf{Truy cập 10 lần:} Tiến trình sẽ truy cập các trang logic này 10 lần, theo thứ tự mà người dùng nhập vào từ bàn phím.
+\end{itemize}
+
+Khi một trang được truy cập mà không có trong bộ nhớ vật lý, xảy ra lỗi trang (\textit{page fault}). Nếu bộ nhớ vật lý đã đầy, cần thay thế một trang cũ theo nguyên tắc FIFO để đưa trang mới vào.
+
+\subsection{Chương trình mô phỏng}
+Dưới đây là mã nguồn chương trình mô tả thuật toán đổi trang theo nguyên tắc FIFO cho tiến trình được cấp 4 khung, không gian nhớ logic của tiến trình gồm 6 trang và các trang của tiến trình được truy cập 10 lần theo thứ tự nhập từ bàn phím.
+
+\lstinputlisting[language=Python]{SourceCode/FIFO19.java}
+
+\subsection{Kết quả chương trình}
+Ví dụ: Với dãy truy cập \texttt{1 2 3 5 4 6 3 1 2 6}, chương trình sẽ tạo ra kết quả hiển thị trạng thái bộ nhớ và số lỗi trang tương ứng.
+
+\begin{lstlisting}
+Input: 1 2 3 5 4 6 3 1 2 6
+Them trang: 1 Hang doi: 1 
+Them trang: 2 Hang doi: 1 2 
+Them trang: 3 Hang doi: 1 2 3 
+Them trang: 5 Hang doi: 1 2 3 5 
+Them trang: 4 Hang doi: 4 2 3 5 F
+Them trang: 6 Hang doi: 4 6 3 5 F
+Them trang: 3 Hang doi: 4 6 3 5 
+Them trang: 1 Hang doi: 4 6 1 5 F
+Them trang: 2 Hang doi: 4 6 1 2 F
+Them trang: 6 Hang doi: 4 6 1 2 
+So lan loi trang: 4
+\end{lstlisting}
+
+\subsection{Kết luận chương trình}
+Chương trình sẽ:
+\begin{itemize}
+    \item Hiển thị trạng thái bộ nhớ sau mỗi lần truy cập.
+    \item Tính tổng số lỗi trang xảy ra sau khi truy cập toàn bộ các trang.
+\end{itemize}
